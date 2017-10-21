@@ -1,0 +1,131 @@
+/* -----GENERAL------ */
+
+.wrap {
+    margin: 0 auto;
+    max-width: 1100px;
+    width: 90%;
+}
+
+.contents {
+    padding: 30px 0;
+}
+
+.valign-middle {
+    display: table;
+}
+
+.valign-middle .columns {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.valign-middle .columns,
+.valign-middle [class*="column"] + [class*="column"]:last-child {
+    float: none;
+    }
+
+/* ----- NAV ----- */
+
+nav {
+    width: 100%;
+}
+
+/* ----- HERO - Homepage only ----- */
+
+.hero {
+    border-bottom: 1px solid gray;
+    padding: 80px 0;
+    text-align: center;
+    background-color: #999;
+    background-image: url("../img/dark_embroidery.png");
+    color: rgba(255,255,255,0.9);
+}
+
+
+/* ----- MAIN ----- */
+
+/* HOME PAGE */
+
+main section:nth-child(2) {
+    background-color: #eee;
+}
+
+main section {
+    padding: 80px 0;
+}
+
+main section img {
+    box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Dashboard */
+
+.dashboard {
+    margin: 20px 2.5%;
+    border: 1px solid gray;
+    box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+}
+
+table {
+    width: 100%;
+}
+
+.dashboard tbody td:nth-child(n+2) {
+    text-align: center;
+}
+
+
+/* Item and Edit pages */
+
+.item {
+    background-color: #ffffff;
+    border: 1px solid gray;
+    box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.3);
+    margin: 20px 2.5%;
+}
+
+.item select {
+  width: 25%;
+}
+
+
+/* ----- FOOTER ----- */
+
+footer {
+    background-color: #404040;
+    height: 200px;
+    padding: 40px 0;
+}
+
+footer h4 {
+    color: rgba(255,255,255,0.85);
+    font-size: 1.3em;
+}
+
+footer hr {
+    border-color: rgba(255,255,255,0.2);
+}
+
+footer a {
+    display: block;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.8em;
+}
+
+footer a:hover {
+    color: rgba(255,255,255,0.8);
+}
+
+footer .column:nth-child(2) {
+    text-align: right;
+}
+
+.footer-left {
+    margin-left: 0;
+}
+
+.footer-right {
+    margin-right: 0;
+}
+

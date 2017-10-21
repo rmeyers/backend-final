@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <section class="dashboard">
+    <div class="wrap contents">
+      <h3>Sports Items Dashboard</h3><br/>
+      {% if logged_in == 1 %}
+        <div class="row">
+            <h5 class="small-6 columns float-left">Hi {{ session.username }}!</h5>
+        </div><br><br>
+      {% endif %}
+      <table class="">
+        <thead>
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <h4>{{ messages[0] }}</h4>
+            {% endif %}
+          {% endwith %}
+          <div class="row">
+            <div class="small-6 columns">
+              <h3>Select a category</h3>
+              {% for category in categories %}
+                <a href="{{ url_for('showCategoryItems', category=category.category) }}"><h4>{{ category.category }}</h4></a>
+              {% endfor %}
+            </div>
+            <div class="small-6 columns">
+              {% if logged_in == 1 %}
+                <a href="{{ url_for('newItem') }}">Add Item</a>
+              {% endif %}
+              <h3>Recent Items</h3>
+              {% for item in items %}
+                <a href="{{ url_for('showItem', item_id=item.id) }}"><h4>{{ item.item }}</h4></a>
+              {% endfor %}
+            </div>
+          </div>
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}

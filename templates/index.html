@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Homepage{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <div class="hero">
+    <div class="wrap">
+      <h1>Categories Application</h1>
+      <h3>Check out your sports. Figure out what you need.</h3>
+      <h3>Quick and easy.</h3>
+      <a class="button" href="#learn-more">Learn More</a>
+      <a class="button success radius btn-login" href="/dashboard">Dashboard</a>
+    </div>
+  </div>
+  <main>
+    <section>
+      <div class="row wrap" id="learn-more">
+        <div class="medium-6 column">
+          <img src="https://i.ytimg.com/vi/aAdioIs17LM/maxresdefault.jpg" alt="Image 1"/>
+        </div>
+        <div class="medium-6 column">
+          <p>This is going to be a great tool!</p>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="row wrap">
+        <div class="medium-6 column">
+          <p>This part will talk about all the awesome features!</p>
+        </div>
+        <div class="medium-6 column">
+          <img src="static/img/clouds.png" alt="Image 2" />
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock %}

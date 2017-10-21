@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <section class="item">
+    {% if logged_in == 0 %}
+    <h1>ERROR: You are not logged in</h1>
+    <h4>You must be logged in to edit an item.</h4>
+    {% endif %}
+
+    {% if logged_in == 1 %}
+    <div class="wrap contents">
+      <h3>Sports Item: {{ item.item }}</h3><br/>
+      <form action="{{ url_for('editItem', item_id=item.id) }}" method="post">
+        <p>Title: </p><input name="title" value="{{ item.item }}"></input><br><br>
+        <p>Description: </p><input name="description" value="{{ item.description }}"></input><br><br>
+        <p>Category: </p><select name="category">
+          {% for name in categories %}
+            {% if name == category.category %}
+              <option value="{{ name }}" selected>{{ name }}</option>
+            {% else %}
+              <option value="{{ name }}">{{ name }}</option>
+            {% endif %}
+          {% endfor %}
+        </select><br><br>
+        <a href="/{{ item.id }}">Cancel</a> | <input type="submit" value="Submit"></input>
+      </form><br>
+    </div>
+    {% endif %}
+  </section>
+{% endblock %}

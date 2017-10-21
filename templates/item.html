@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <section class="item">
+    <div class="wrap contents">
+      <h3>Sports Item: {{ item.item }}</h3><br/>
+      <p>Description: {{ item.description }}</p>
+    </div>
+    {% if logged_in == 1 %}
+    <div class="wrap contents">
+        <a href="{{ url_for('editItem', item_id=item.id) }}">Edit</a> | <a href="/delete/{{ item.id }}">Delete</a>
+    </div>
+    {% endif %}
+  </section>
+{% endblock %}

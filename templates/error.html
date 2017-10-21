@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Homepage{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+<div class="container login-form">
+  <div class="wrap">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <br><br><br>
+          <h2>Error: {{ message }}</h2>
+          <br><br><br>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+</div>
+{% endblock %}
