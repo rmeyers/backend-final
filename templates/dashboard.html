@@ -7,7 +7,7 @@
   <section class="dashboard">
     <div class="wrap contents">
       <h3>Sports Items Dashboard</h3><br/>
-      {% if logged_in == 1 %}
+      {% if 'username' in session %}
         <div class="row">
             <h5 class="small-6 columns float-left">Hi {{ session.username }}!</h5>
         </div><br><br>
@@ -31,7 +31,7 @@
               {% endfor %}
             </div>
             <div class="small-6 columns">
-              {% if logged_in == 1 %}
+              {% if 'username' in session %}
                 <a href="{{ url_for('newItem') }}">Add Item</a>
               {% endif %}
               <h3>Recent Items</h3>

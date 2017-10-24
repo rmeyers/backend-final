@@ -16,6 +16,8 @@ import json
 from flask import make_response
 import requests
 
+from functools import wraps
+
 # Initiate app
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -141,14 +143,14 @@ def disconnect():
     return redirect(url_for('homepage'))
 
 
-# Check the login status of a user. Return 1 if
-# logged in, 0 if not.
-def check_login():
-    # Check if the user is logged in.
-    logged_in = 1
-    if 'username' not in login_session:
-        logged_in = 0
-    return logged_in
+# Create wrapper function for login checks
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+            return redirect('/')
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 ######################################################################
@@ -208,41 +210,38 @@ def homepage():
 # Show all categories
 @app.route('/dashboard')
 def showDashboard():
-    logged_in = check_login()
     categories = session.query(Category).order_by(asc(Category.category))
     items = getRecentItems()
     return render_template('dashboard.html', categories=categories,
-                           items=items, logged_in=logged_in)
+                           items=items)
 
 
 # Show items in a category
 @app.route('/dashboard/<category>')
 def showCategoryItems(category):
-    logged_in = check_login()
     categories = session.query(Category).order_by(asc(Category.category))
     items = getItemsInCategory(category)
     return render_template('dashboard.html', categories=categories,
-                           items=items, logged_in=logged_in)
+                           items=items)
 
 
 # Show item information
 @app.route('/<int:item_id>')
 def showItem(item_id):
-    logged_in = check_login()
-    if logged_in == 0:
-        return redirect('/')
-
     item = session.query(Item).filter_by(id=item_id).one()
-    return render_template('item.html', item=item, logged_in=logged_in)
+    return render_template('item.html', item=item)
 
 
 # Allow editing of item
 @app.route('/edit/<int:item_id>', methods=['GET', 'POST'])
+@login_required
 def editItem(item_id):
-    logged_in = check_login()
-    if logged_in == 0:
-        return redirect('/')
     item = session.query(Item).filter_by(id=item_id).one()
+    user_id = login_session['user_id']
+    user = session.query(User).filter_by(id=user_id).one()
+
+    if item.user_id != user_id:
+        return "NOT AUTHORIZED: You cannot edit/delete this item."
 
     if request.method == 'POST':
         if request.form['title']:
@@ -264,16 +263,13 @@ def editItem(item_id):
             category_names.append(name.category)
         category = session.query(Category).filter_by(id=item.category_id).one()
         return render_template('edit.html', item=item, category=category,
-                               categories=category_names, logged_in=logged_in)
+                               categories=category_names)
 
 
 # Allow adding a new item
 @app.route('/new', methods=['GET', 'POST'])
+@login_required
 def newItem():
-    logged_in = check_login()
-    if logged_in == 0:
-        return redirect('/dashboard')
-
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
@@ -294,18 +290,20 @@ def newItem():
         for name in categories:
             category_names.append(name.category)
 
-        return render_template('newItem.html', categories=category_names,
-                               logged_in=logged_in)
+        return render_template('newItem.html', categories=category_names)
 
 
 # Allow deleting of item
 @app.route('/delete/<int:item_id>', methods=['GET', 'POST'])
+@login_required
 def deleteItem(item_id):
-    logged_in = check_login()
-    if logged_in == 0:
-        return redirect('/')
-
     item = session.query(Item).filter_by(id=item_id).one()
+
+    user_id = login_session['user_id']
+    user = session.query(User).filter_by(id=user_id).one()
+
+    if item.user_id != user_id:
+        return "NOT AUTHORIZED: You cannot edit/delete this item."
 
     if request.method == 'POST':
         if request.form['_method'] == 'delete':
@@ -314,7 +312,7 @@ def deleteItem(item_id):
             print "Item deleted successfully!"
             return redirect('/dashboard')
     else:
-        return render_template('delete.html', item=item, logged_in=logged_in)
+        return render_template('delete.html', item=item)
 
 
 # Making an API endpoint (GET request)

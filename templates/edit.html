@@ -5,12 +5,13 @@
 {% endblock %}
 {% block content %}
   <section class="item">
-    {% if logged_in == 0 %}
+    {% if 'username' not in session %}
     <h1>ERROR: You are not logged in</h1>
     <h4>You must be logged in to edit an item.</h4>
     {% endif %}
 
-    {% if logged_in == 1 %}
+    {% if 'username' in session %}
+    {% if item.user_id == session['user_id'] %}
     <div class="wrap contents">
       <h3>Sports Item: {{ item.item }}</h3><br/>
       <form action="{{ url_for('editItem', item_id=item.id) }}" method="post">
@@ -28,6 +29,7 @@
         <a href="/{{ item.id }}">Cancel</a> | <input type="submit" value="Submit"></input>
       </form><br>
     </div>
+    {% endif %}
     {% endif %}
   </section>
 {% endblock %}

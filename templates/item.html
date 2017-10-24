@@ -9,10 +9,12 @@
       <h3>Sports Item: {{ item.item }}</h3><br/>
       <p>Description: {{ item.description }}</p>
     </div>
-    {% if logged_in == 1 %}
+    {% if 'username' in session %}
+    {% if item.user_id == session['user_id'] %}
     <div class="wrap contents">
         <a href="{{ url_for('editItem', item_id=item.id) }}">Edit</a> | <a href="/delete/{{ item.id }}">Delete</a>
     </div>
+    {% endif %}
     {% endif %}
   </section>
 {% endblock %}
